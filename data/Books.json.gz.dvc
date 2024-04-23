@@ -1,0 +1,12 @@
+md5: fd606171b7b9bc7109840832229d6ec3
+frozen: true
+deps:
+- checksum: '18338484743607446252207963916904581464'
+  size: 11813848069
+  hash: md5
+  path: https://drive.switch.ch/index.php/s/YNor9z3yrb9HP8v/download
+outs:
+- hash: md5
+  path: Books.json.gz
+  md5: 38bd00a67dd98902741eebfaf64f08dc
+  size: 11813848069
