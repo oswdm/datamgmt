@@ -42,9 +42,11 @@ class DocumentProcessor:
         file_path: str,
         model="sentence-transformers/all-MiniLM-L6-v2",
         multiprocess=False,
+        qsize=0,
     ) -> None:
         self.file_path = file_path
         self.multiprocess = multiprocess
+        self.qsize = qsize
         self.model = model
 
         # setup
@@ -74,7 +76,7 @@ class DocumentProcessor:
 
     def _setup(self):
         if self.multiprocess:
-            self.queue = multiprocessing.Queue(maxsize=1_000)
+            self.queue = multiprocessing.Queue(maxsize=self.qsize)
             self.pars_proc = None
             self.stop_event = multiprocessing.Event()
         else:
@@ -99,7 +101,6 @@ class DocumentProcessor:
             self.pars_proc.join(3)
 
     def reset_parser(self):
-        self.queue.close()
         self.stop_parser()
         self._setup()
         self.start_parser()
