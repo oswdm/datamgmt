@@ -21,6 +21,13 @@ dvc update -R data/
 ```
 The files are now still compressed. So navigate to the data and unzip them with tools like gunzip in linux.
 
+### Step 2: run the docker container
+
+Make sure your Docker daemon is running. Navigate to the project folder in a second terminal window and run the following command to start the Docker container containing the vector databases.
+```shell
+docker compose up
+```
+
 ### DocumentProcessor
 
 usage
