@@ -1,0 +1,23 @@
+stages:
+  extract-data:
+    cmd: gunzip -k data/Books.json.gz
+    deps:
+      - data/Books.json.gz
+    outs:
+      - data/Books.json
+
+  start-containers:
+    cmd: docker-compose up -d
+
+  benchmark:
+    cmd: TOKENIZERS_PARALLELISM=false python main.py
+    deps:
+      - main.py
+    params:
+      - data_path
+      - multiprocess
+      - n_docs
+      - n_query_results
+
+  stop-containers:
+    cmd: docker-compose down --volumes
