@@ -4,14 +4,22 @@
 
 ### Step I: downloading data
 
-TODO: explain requirements.txt
+The first step is to create your conda environment for this python project. Run the following command in your terminal and install the recommended packages like pip:
+```shell
+conda create --name <env-name> python=3.8
+```
 
-Be sure to have `dvc` installed. Then run the following command in the git root directory
+The necessary modules for this python project can be installed with the given [requirements.txt](requirements.txt) file. Navigate in your terminal to your project folder and run the following command:
+```shell
+conda activate <env-name>
+pip install -r requirements.txt
+```
+
+If you followed the steps before `dvc` must now be installed. Run the following command in the git root directory to download the data:
 ```shell
 dvc update -R data/
 ```
-
-unzip data with gunzip
+The files are now still compressed. So navigate to the data and unzip them with tools like gunzip in linux.
 
 ### DocumentProcessor
 
