@@ -1,7 +1,10 @@
+import time
+
+import yaml
+from dbs import DBS
+from dvclive import Live
 from helpers.data_processor import DocumentProcessor
 from helpers.dp_connector import DBConector
-from dbs import DBS
-import time
 from tqdm import tqdm
 
 # --------------------------------------------------------------------------------------
@@ -54,35 +57,43 @@ def benchmark_remove(dp: DocumentProcessor, db: DBConector, n_documents: int):
 # --------------------------------------------------------------------------------------
 
 
-def main(dp: DocumentProcessor, n_docs: int, n_query_results: int):
-    for m in (pbar := tqdm(DBS, leave=False)):
-        pbar.desc = m.name
+def main():
+    # params
+    cfg = yaml.safe_load(open("params.yaml"))
+    data_path = cfg["data_path"]
+    multiprocess = cfg["multiprocess"]
+    n_docs = cfg["n_docs"]
+    n_query_results = cfg["n_query_results"]
 
-        db = m.value()
-        tqdm.write(f"{m.name}:")
+    # document processor
+    dp = DocumentProcessor(file_path=data_path, multiprocess=multiprocess, qsize=n_docs)
+    dp.start_parser()
 
-        # document insert
-        ins = benchmark_insert(dp, db, n_docs)
-        tqdm.write(f"insert: {ins * NS2MS / n_docs} ms/insert")
+    # benchmarks
+    with Live() as live:
+        for m in (pbar := tqdm(DBS, leave=False)):
+            pbar.desc = m.name
 
-        # document query
-        qry = benchmark_query(dp, db, n_docs, n_query_results)
-        tqdm.write(f"query:  {qry * NS2MS / n_docs} ms/query")
+            db = m.value()
+            tqdm.write(f"{m.name}:")
 
-        # document insert
-        rem = benchmark_remove(dp, db, n_docs)
-        tqdm.write(f"remove: {rem * NS2MS / n_docs} ms/removal")
+            # document insert
+            ins = benchmark_insert(dp, db, n_docs) * NS2MS / n_docs
+            live.log_metric(f"{m.name}/insert", ins)
+            tqdm.write(f"insert: {ins} ms/insert")
 
-    dp.stop_parser()
+            # document query
+            qry = benchmark_query(dp, db, n_docs, n_query_results) * NS2MS / n_docs
+            live.log_metric(f"{m.name}/query", qry)
+            tqdm.write(f"query:  {qry} ms/query")
+
+            # document insert
+            rem = benchmark_remove(dp, db, n_docs) * NS2MS / n_docs
+            live.log_metric(f"{m.name}/remove", rem)
+            tqdm.write(f"remove: {rem} ms/removal")
+
+        dp.stop_parser()
 
 
 if __name__ == "__main__":
-    file_path = "data/Books.json"
-    multiprocess = True
-    n_docs = 1_000
-    n_query_results = 3
-
-    dp = DocumentProcessor(file_path=file_path, multiprocess=multiprocess, qsize=n_docs)
-    dp.start_parser()
-
-    main(dp, n_docs, n_query_results)
+    main()

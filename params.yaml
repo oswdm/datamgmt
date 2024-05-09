@@ -1,0 +1,4 @@
+data_path: "data/Books.json"
+multiprocess: True
+n_docs: 1_000
+n_query_results: 3

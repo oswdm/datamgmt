@@ -2,6 +2,7 @@
 # python deps
 # --------------------------------------------------------------------------------------
 dvc
+dvclive
 sentence-transformers
 pydantic
 
