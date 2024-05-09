@@ -19,7 +19,7 @@ If you followed the steps before `dvc` must now be installed. Run the following 
 ```shell
 dvc update -R data/
 ```
-The files are now still compressed. So navigate to the data and unzip them with tools like gunzip in linux.
+The files are now still compressed. So navigate to the data and unzip them with tools like gunzip in Linux. Make sure that you do not unpack the file into a subfolder but directly into the data folder.
 
 ### Step 2: run the docker container
 
