@@ -5,6 +5,7 @@ dvc
 dvclive
 sentence-transformers
 pydantic
+opentelemetry-proto==1.24.0
 
 # --------------------------------------------------------------------------------------
 # dbs
@@ -12,3 +13,4 @@ pydantic
 chromadb
 psycopg2
 pgvector
+qdrant_client
