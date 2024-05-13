@@ -12,3 +12,4 @@ pydantic
 chromadb
 psycopg2
 pgvector
+pyvespa

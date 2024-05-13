@@ -1,0 +1,31 @@
+schema: '2.0'
+stages:
+  extract-data:
+    cmd: gunzip -k data/Books.json.gz
+    deps:
+    - path: data/Books.json.gz
+      hash: md5
+      md5: 38bd00a67dd98902741eebfaf64f08dc
+      size: 11813848069
+    outs:
+    - path: data/Books.json
+      hash: md5
+      md5: f2d305927fa1659b018a6e8fb9e5e134
+      size: 37648418113
+  start-containers:
+    cmd: docker-compose up -d
+  benchmark:
+    cmd: TOKENIZERS_PARALLELISM=false python main.py
+    deps:
+    - path: main.py
+      hash: md5
+      md5: 8e3241019a7a080fdca7e35e448b2a60
+      size: 2942
+    params:
+      params.yaml:
+        data_path: data/Books.json
+        multiprocess: true
+        n_docs: 1000
+        n_query_results: 3
+  stop-containers:
+    cmd: docker-compose down --volumes
