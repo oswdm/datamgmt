@@ -1,4 +1,4 @@
-md5: 1f826d37e0ad620aa78c566f024fc91a
+md5: fd606171b7b9bc7109840832229d6ec3
 frozen: true
 deps:
 - checksum: '18338484743607446252207963916904581464'
@@ -8,3 +8,5 @@ deps:
 outs:
 - hash: md5
   path: Books.json.gz
+  md5: 38bd00a67dd98902741eebfaf64f08dc
+  size: 11813848069
