@@ -1,19 +1,13 @@
 import os
-
-import yaml
 import tempfile
 
 from helpers.dp_connector import DBConector
-from helpers.data_processor import DocumentProcessor, Document
+from helpers.data_processor import Document
 
-from vespa.package import ApplicationPackage
-from vespa.package import Field, FieldSet, RankProfile
+from vespa.package import ApplicationPackage, Field, FieldSet, RankProfile
 from vespa.application import Vespa
 from vespa.io import VespaQueryResponse
-from vespa.exceptions import VespaError
 from vespa.deployment import VespaDocker
-
-
 
 class VespaDB(DBConector):
     def __init__(self) -> None:
@@ -32,12 +26,12 @@ class VespaDB(DBConector):
         os.environ["APP_NAME"] = app_name
 
         app_package.schema.add_fields(
-            Field(name="id", type="string", indexing=["index"]),
+            Field(name="id", type="string", indexing=["attribute", "summary"]),
             Field(
                 name="text", type="string", indexing=["index", "summary"]
             ),
             Field(
-                name="embedding", type="tensor<float>(d0[384])", indexing=["index", "summary"]
+                name="embedding", type="tensor<float>(d0[384])", indexing=["index", "summary", "attribute"]
             ),
         )
         app_package.schema.add_field_set(FieldSet(name="default", fields=["id", "text", "embedding"]))
