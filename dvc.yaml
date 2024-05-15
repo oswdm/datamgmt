@@ -21,8 +21,3 @@ stages:
 
   stop-containers:
     cmd: docker-compose down --volumes
-metrics:
-- dvclive/metrics.json
-plots:
-- dvclive/plots/metrics:
-    x: step
