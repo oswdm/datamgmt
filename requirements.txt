@@ -13,3 +13,4 @@ chromadb
 psycopg2
 pgvector
 pyvespa
+pymilvus==2.4.1
