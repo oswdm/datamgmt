@@ -1,50 +1,71 @@
 # DB Benchmark
 
-## Setup
-
-### Step I: downloading data
-
-The first step is to create your conda environment for this python project. Run the following command in your terminal and install the recommended packages like pip:
-```shell
-conda create --name <env-name> python=3.8
+## project structure
+```
+db-benchmark
+├── README.md
+├── compose.yaml            <- compose file for docker containers
+├── data                    <- data folder containing .dvc files
+│   └── Books.json.gz.dvc
+├── dbs                     <- dbs that implement helpers.db_connector class
+│   ├── chromadb.py
+│   └── pgvector.py
+├── helpers                 <- helper classes for data loading and db interaction   
+│   ├── data_processor.py
+│   └── dp_connector.py
+├── dvc.yaml                <- dvc pipeline
+├── main.py                 <- main file
+├── params.yaml             <- dvc experiment parameters
+└── requirements.txt
 ```
 
-The necessary modules for this python project can be installed with the given [requirements.txt](requirements.txt) file. Navigate in your terminal to your project folder and run the following command:
+## Prerequisites
+
+- docker
+- docker-compose
+
+## Setup
+
+### Step I: create environment
+
+The first step is to create your environment.
+```shell
+conda create --name <env-name> python=3.11
+```
+
+### Step II: install dependencies
+The necessary modules for this python project can be installed with the given
+[requirements.txt](requirements.txt) file. 
 ```shell
 conda activate <env-name>
 pip install -r requirements.txt
 ```
 
-If you followed the steps before `dvc` must now be installed. Run the following command in the git root directory to download the data:
+### Step III: downloading data
+If you followed the steps before the `dvc` command is now available. Run the following
+command in the git root directory to download the data:
 ```shell
 dvc update -R data/
 ```
-The files are now still compressed. So navigate to the data and unzip them with tools like gunzip in Linux. Make sure that you do not unpack the file into a subfolder but directly into the data folder.
 
-### Step 2: run the docker container
+## Running the Benchmark
 
-Make sure your Docker daemon is running. Navigate to the project folder in a second terminal window and run the following command to start the Docker container containing the vector databases.
-```shell
-docker compose up
-```
+The benchmarking process involves several steps managed by DVC:
 
-### DocumentProcessor
+1. **Running the DVC Pipeline**:
+   - Execute the main DVC pipeline which orchestrates the data processing and
+     benchmarking tasks with `dvc exp run`.
+   
+1. **Reviewing Results**:
+   - Use the `dvc exp show` command to visualize and analyze the results of the
+     experiments conducted as part of the benchmark.
 
-usage
+## Results
 
-```python
-    from helpers.data_processor import DocumentProcessor
+We found the following results (times in miliseconds):
+| Experiment | Created | chromadb.insert | chromadb.query | chromadb.remove | pgvector.insert | pgvector.query | pgvector.remove | vespa.insert | vespa.query | vespa.remove | milvus.insert | milvus.query | milvus.remove | qdrant.insert | qdrant.query | qdrant.remove
+|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+| workspace | - | 7.3517 | 5.8963 | 6.2306 | 7.0311 | 2.7662 | 0.30817 | 8.7366 | 11.556 | 5.6302 | 3.8154 | 2.0659 | 2.9517 | 6.9746 | 2.1554 | 6.8914 |       
+| 039a025 [eerie-jota] | 01:20 PM | 7.3517 | 5.8963 | 6.2306 | 7.0311 | 2.7662 | 0.30817 | 8.7366 | 11.556 | 5.6302 | 3.8154 | 2.0659 | 2.9517 | 6.9746 | 2.1554 | 6.8914 | 
 
-    file_path = "data/Books.json"
-    multiprocess = True
 
-    dp = DocumentProcessor(file_path=file_path, multiprocess=multiprocess)
-
-    dp.start_parser()
-
-    for doc in dp:
-        # do something
-        print(doc)
-
-    dp.stop_parser()
-```
