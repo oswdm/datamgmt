@@ -9,6 +9,9 @@ db-benchmark
 │   └── Books.json.gz.dvc
 ├── dbs                     <- dbs that implement helpers.db_connector class
 │   ├── chromadb.py
+│   ├── milvus.py
+│   ├── qdrant.py
+│   ├── vespadb.py
 │   └── pgvector.py
 ├── helpers                 <- helper classes for data loading and db interaction   
 │   ├── data_processor.py
