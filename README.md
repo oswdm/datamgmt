@@ -63,9 +63,10 @@ The benchmarking process involves several steps managed by DVC:
 ## Results
 
 We found the following results (times in miliseconds):
-| Experiment | Created | chromadb.insert | chromadb.query | chromadb.remove | pgvector.insert | pgvector.query | pgvector.remove | vespa.insert | vespa.query | vespa.remove | milvus.insert | milvus.query | milvus.remove | qdrant.insert | qdrant.query | qdrant.remove
-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
-| workspace | - | 7.3517 | 5.8963 | 6.2306 | 7.0311 | 2.7662 | 0.30817 | 8.7366 | 11.556 | 5.6302 | 3.8154 | 2.0659 | 2.9517 | 6.9746 | 2.1554 | 6.8914 |       
-| 039a025 [eerie-jota] | 01:20 PM | 7.3517 | 5.8963 | 6.2306 | 7.0311 | 2.7662 | 0.30817 | 8.7366 | 11.556 | 5.6302 | 3.8154 | 2.0659 | 2.9517 | 6.9746 | 2.1554 | 6.8914 | 
-
-
+| | insert | query | remove |
+| - | :-: | :-: | :-: |
+| chromadb | 7.3517 | 5.8963 | 6.2306 |
+| pgvector | 7.0311 | 2.7662 | 0.30817 |
+| vespa | 8.7366 | 11.556 | 5.6302 |
+| milvus | 3.8154 | 2.0659 | 2.9517 |
+| qdrant | 6.9746 | 2.1554 | 6.8914 |
